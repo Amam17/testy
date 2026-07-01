@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasty Hub | Best Shawarma in Kano</title>
+    <meta name="description" content="Tasty Hub - Kano's favorite spot for Shawarma, Pizza, Asun, Burgers, and more. 4.2 rating. Dine-in, takeaway, and no-contact delivery.">
+    <link rel="canonical" href="https://tastyhub.ng/">
+    <meta property="og:title" content="Tasty Hub | Best Shawarma in Kano">
+    <meta property="og:description" content="Experience the best shawarma in Kano at Tasty Hub. Fresh, tasty, and delivered to your door.">
+    <meta property="og:type" content="restaurant">
+    <style>
+        /* ----- RESET & BASE (Fresh Orange & Green Palette) ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            background: #12100E;
+            color: #F5EFE8;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ----- LOADER ----- */
+        #loader {
+            position: fixed;
+            inset: 0;
+            background: #12100E;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease;
+        }
+        #loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #2A2420;
+            border-top: 4px solid #F27A1A;
+            border-radius: 50%;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ----- STICKY NAV ----- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 14px 0;
+            background: rgba(18, 16, 14, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(242, 122, 26, 0.15);
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo svg {
+            display: block;
+        }
+        .logo span {
+            color: #F27A1A;
+        }
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #F5EFE8;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #F27A1A;
+        }
+        .nav-cta {
+            background: #F27A1A;
+            color: #12100E !important;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .nav-cta:hover {
+            background: #F58C3A;
+            transform: scale(1.02);
+            color: #12100E !important;
+        }
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            width: 28px;
+            height: 2.5px;
+            background: #F5EFE8;
+            border-radius: 4px;
+            transition: 0.3s;
+        }
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -5px);
+        }
+
+        /* ----- HERO ----- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 100px 0 60px;
+            background: radial-gradient(circle at 80% 20%, #2A1C10, #12100E 80%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            left: -10%;
+            bottom: -20%;
+            width: 50%;
+            height: 70%;
+            background: radial-gradient(ellipse, rgba(242, 122, 26, 0.08), transparent 70%);
+            pointer-events: none;
+        }
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .hero-content h1 {
+            font-size: 3.8rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero-content h1 span {
+            color: #F27A1A;
+        }
+        .hero-content .sub-highlight {
+            color: #3AA34B;
+        }
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #BFAFA5;
+            max-width: 500px;
+            margin-bottom: 32px;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(242, 122, 26, 0.15);
+            padding: 6px 16px;
+            border-radius: 40px;
+            border: 1px solid rgba(242, 122, 26, 0.30);
+            font-size: 0.9rem;
+            color: #F27A1A;
+            margin-bottom: 20px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        .btn-primary {
+            background: #F27A1A;
+            color: #12100E;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary:hover {
+            background: #F58C3A;
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: #F5EFE8;
+            padding: 14px 36px;
+            border-radius: 40px;
+            font-weight: 600;
+            border: 1.5px solid #5A4A40;
+            transition: border 0.3s, color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-secondary:hover {
+            border-color: #F27A1A;
+            color: #F27A1A;
+        }
+        .hero-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .hero-image .placeholder-img {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1/1;
+            background: linear-gradient(145deg, #2A1C10, #1A1410);
+            border-radius: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #3D2E26;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+            text-align: center;
+            padding: 30px;
+            gap: 12px;
+            color: #8A7A6E;
+        }
+        .placeholder-img .food-icon-text {
+            font-size: 1.4rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            color: #F27A1A;
+        }
+
+        /* ----- SECTION COMMON ----- */
+        section {
+            padding: 80px 0;
+        }
+        .section-title {
+            font-size: 2.6rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .section-title span {
+            color: #F27A1A;
+        }
+        .section-sub {
+            color: #A89486;
+            max-width: 600px;
+            margin-bottom: 48px;
+        }
+        .center-text {
+            text-align: center;
+        }
+        .center-text .section-sub {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ----- ABOUT ----- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .about-text p {
+            color: #BFAFA5;
+            margin-bottom: 16px;
+        }
+        .about-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 24px;
+        }
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #F27A1A;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 0.9rem;
+            color: #A89486;
+        }
+
+        /* ----- MENU / SERVICES (UPDATED WITH REAL MENU) ----- */
+        .menu-category {
+            margin-bottom: 48px;
+        }
+        .menu-category h3 {
+            font-size: 1.8rem;
+            color: #F27A1A;
+            margin-bottom: 16px;
+            border-bottom: 2px solid rgba(242, 122, 26, 0.2);
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        .menu-item {
+            background: #1A1614;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid #2A2420;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        .menu-item:hover {
+            transform: translateY(-3px);
+            border-color: #F27A1A;
+            box-shadow: 0 8px 20px rgba(242, 122, 26, 0.06);
+        }
+        .menu-item .item-name {
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+        .menu-item .item-price {
+            font-weight: 700;
+            color: #F27A1A;
+            font-size: 1rem;
+            white-space: nowrap;
+            margin-left: 16px;
+        }
+        .menu-item .whatsapp-order-small {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 0.3s;
+            text-decoration: none;
+            margin-left: 12px;
+            flex-shrink: 0;
+        }
+        .menu-item .whatsapp-order-small:hover {
+            opacity: 0.85;
+        }
+
+        /* ----- WHY CHOOSE US ----- */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+        .why-item {
+            text-align: center;
+            padding: 24px 16px;
+            background: #1A1614;
+            border-radius: 20px;
+            border: 1px solid #2A2420;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .why-item:hover {
+            border-color: #F27A1A;
+            transform: translateY(-4px);
+        }
+        .why-item .icon-wrap {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            width: 48px;
+            height: 48px;
+        }
+        .why-item h4 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+        .why-item p {
+            color: #A89486;
+            font-size: 0.95rem;
+        }
+
+        /* ----- TESTIMONIALS ----- */
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        .testimonial-card {
+            background: #1A1614;
+            padding: 28px 24px;
+            border-radius: 20px;
+            border: 1px solid #2A2420;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            border-color: #F27A1A;
+        }
+        .testimonial-card .stars {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .testimonial-card blockquote {
+            font-style: italic;
+            color: #E0D6CE;
+            margin: 12px 0;
+        }
+        .testimonial-card cite {
+            font-style: normal;
+            color: #A89486;
+            font-size: 0.9rem;
+        }
+
+        /* ----- PROCESS ----- */
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 24px;
+            counter-reset: step;
+        }
+        .step {
+            text-align: center;
+            padding: 20px;
+            background: #1A1614;
+            border-radius: 20px;
+            border: 1px solid #2A2420;
+            position: relative;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+        .step:hover {
+            transform: translateY(-4px);
+            border-color: #F27A1A;
+        }
+        .step .num {
+            font-size: 2.8rem;
+            font-weight: 800;
+            color: #F27A1A;
+            opacity: 0.4;
+            line-height: 1;
+        }
+        .step h4 {
+            margin: 8px 0 4px;
+        }
+        .step p {
+            color: #A89486;
+            font-size: 0.9rem;
+        }
+
+        /* ----- FAQ ----- */
+        .faq-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .faq-item {
+            background: #1A1614;
+            margin-bottom: 12px;
+            border-radius: 14px;
+            border: 1px solid #2A2420;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        .faq-item:hover {
+            border-color: #F27A1A;
+        }
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 20px 24px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #F5EFE8;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .faq-question:hover {
+            background: #1F1815;
+        }
+        .faq-question .arrow {
+            transition: transform 0.3s;
+            display: inline-flex;
+        }
+        .faq-item.active .faq-question .arrow {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s;
+            padding: 0 24px;
+            color: #BFAFA5;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 0 24px 20px;
+        }
+
+        /* ----- INSTAGRAM FEED (GALLERY) ----- */
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .instagram-item {
+            aspect-ratio: 1/1;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #3D2E26;
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            background: #2A2420;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 8px;
+            color: #6A5A4E;
+            font-size: 0.8rem;
+        }
+        .instagram-item:hover {
+            transform: scale(1.03);
+            border-color: #F27A1A;
+            box-shadow: 0 8px 25px rgba(242, 122, 26, 0.15);
+        }
+        .instagram-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ----- CONTACT ----- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+        }
+        .contact-info p {
+            color: #BFAFA5;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .contact-info .label {
+            font-weight: 600;
+            color: #F5EFE8;
+            min-width: 70px;
+        }
+        .contact-info .icon-wrap {
+            display: inline-flex;
+            width: 24px;
+            flex-shrink: 0;
+        }
+        .contact-info a {
+            color: #F27A1A;
+            text-decoration: none;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 14px 18px;
+            margin-bottom: 16px;
+            background: #1A1614;
+            border: 1px solid #2A2420;
+            border-radius: 12px;
+            color: #F5EFE8;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: #F27A1A;
+        }
+        .contact-form textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+        .contact-form button {
+            background: #F27A1A;
+            color: #12100E;
+            border: none;
+            padding: 14px 34px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .contact-form button:hover {
+            background: #F58C3A;
+        }
+        .map-placeholder {
+            width: 100%;
+            height: 280px;
+            background: #1A1410;
+            border-radius: 20px;
+            border: 1px solid #2A2420;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6A5A4E;
+            margin-top: 24px;
+            font-size: 0.9rem;
+            overflow: hidden;
+        }
+        .map-placeholder iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* ----- FOOTER ----- */
+        footer {
+            background: #12100E;
+            border-top: 1px solid #1F1815;
+            padding: 40px 0 24px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        .footer-grid h4 {
+            color: #F27A1A;
+            margin-bottom: 12px;
+        }
+        .footer-grid p,
+        .footer-grid a {
+            color: #A89486;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .footer-grid a:hover {
+            color: #F27A1A;
+        }
+        .copyright {
+            text-align: center;
+            color: #5A4A40;
+            font-size: 0.9rem;
+            border-top: 1px solid #1F1815;
+            padding-top: 20px;
+        }
+
+        /* ----- FLOATING WHATSAPP ----- */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #25D366;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 24px rgba(37, 211, 102, 0.4);
+            z-index: 999;
+            text-decoration: none;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 32px rgba(37, 211, 102, 0.5);
+        }
+
+        /* ----- BACK TO TOP ----- */
+        .back-top {
+            position: fixed;
+            bottom: 100px;
+            right: 24px;
+            background: #F27A1A;
+            color: #12100E;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s, transform 0.3s, box-shadow 0.3s;
+            z-index: 998;
+            box-shadow: 0 4px 16px rgba(242, 122, 26, 0.3);
+        }
+        .back-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .back-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(242, 122, 26, 0.4);
+        }
+
+        /* ----- SCROLL REVEAL ----- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Staggered delays */
+        .menu-item:nth-child(1) { transition-delay: 0.02s; }
+        .menu-item:nth-child(2) { transition-delay: 0.04s; }
+        .menu-item:nth-child(3) { transition-delay: 0.06s; }
+        .menu-item:nth-child(4) { transition-delay: 0.08s; }
+        .menu-item:nth-child(5) { transition-delay: 0.10s; }
+        .menu-item:nth-child(6) { transition-delay: 0.12s; }
+        .menu-item:nth-child(7) { transition-delay: 0.14s; }
+        .menu-item:nth-child(8) { transition-delay: 0.16s; }
+        .menu-item:nth-child(9) { transition-delay: 0.18s; }
+        .menu-item:nth-child(10) { transition-delay: 0.20s; }
+
+        .instagram-item:nth-child(1) { transition-delay: 0.05s; }
+        .instagram-item:nth-child(2) { transition-delay: 0.10s; }
+        .instagram-item:nth-child(3) { transition-delay: 0.15s; }
+        .instagram-item:nth-child(4) { transition-delay: 0.20s; }
+        .instagram-item:nth-child(5) { transition-delay: 0.25s; }
+        .instagram-item:nth-child(6) { transition-delay: 0.30s; }
+
+        .why-item:nth-child(1) { transition-delay: 0.05s; }
+        .why-item:nth-child(2) { transition-delay: 0.10s; }
+        .why-item:nth-child(3) { transition-delay: 0.15s; }
+        .why-item:nth-child(4) { transition-delay: 0.20s; }
+
+        .testimonial-card:nth-child(1) { transition-delay: 0.05s; }
+        .testimonial-card:nth-child(2) { transition-delay: 0.10s; }
+        .testimonial-card:nth-child(3) { transition-delay: 0.15s; }
+
+        .step:nth-child(1) { transition-delay: 0.05s; }
+        .step:nth-child(2) { transition-delay: 0.10s; }
+        .step:nth-child(3) { transition-delay: 0.15s; }
+
+        /* ----- RESPONSIVE ----- */
+        @media (max-width: 992px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                background: #12100E;
+                padding: 20px 0;
+                gap: 16px;
+                border-top: 1px solid #2A2420;
+                margin-top: 12px;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .hero-content h1 { font-size: 2.2rem; }
+            .section-title { font-size: 2rem; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .btn-group .btn-primary, .btn-group .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+            .about-stats { flex-wrap: wrap; gap: 20px; }
+            .whatsapp-float { width: 54px; height: 54px; }
+            .instagram-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+            .menu-grid { grid-template-columns: 1fr; }
+            .menu-item { flex-wrap: wrap; }
+            .menu-item .item-price { margin-left: 0; }
+            .menu-item .whatsapp-order-small { margin-left: auto; }
+        }
+        @media (max-width: 480px) {
+            .container { padding: 0 16px; }
+            .hero { padding: 80px 0 40px; }
+            .hero-content h1 { font-size: 1.8rem; }
+            .instagram-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOADER -->
+    <div id="loader"><div class="loader-spinner"></div></div>
+
+    <!-- STICKY NAV -->
+    <nav id="navbar" role="navigation">
+        <div class="container nav-container">
+            <div class="logo">
+                <!-- Custom Tasty Hub SVG Logo: Stylized Shawarma Wrap -->
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Wrap cone shape -->
+                    <path d="M8 28 L24 28 L16 4 L8 28 Z" fill="#F27A1A" opacity="0.9"/>
+                    <path d="M16 4 L24 28 L28 28 L20 4 L16 4 Z" fill="#3AA34B" opacity="0.9"/>
+                    <!-- Wrap lines / folds -->
+                    <line x1="12" y1="14" x2="20" y2="26" stroke="#12100E" stroke-width="1.2" opacity="0.4"/>
+                    <line x1="16" y1="10" x2="22" y2="22" stroke="#12100E" stroke-width="1.2" opacity="0.4"/>
+                    <line x1="14" y1="18" x2="22" y2="28" stroke="#12100E" stroke-width="1.2" opacity="0.3"/>
+                    <!-- Top filling peek -->
+                    <ellipse cx="16" cy="6" rx="6" ry="3" fill="#3AA34B" opacity="0.6"/>
+                    <ellipse cx="16" cy="6" rx="4" ry="2" fill="#F27A1A" opacity="0.7"/>
+                </svg>
+                Tasty <span>Hub</span>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#instagram">Instagram</a></li>
+                <li><a href="#contact" class="nav-cta">Order Now</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A" stroke="none"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                    4.2 / 5 · 31+ Reviews
+                </div>
+                <h1>Kano's Home of the <span>Perfect Shawarma</span></h1>
+                <p>Bite into the best shawarma in Kano. Fresh, flavorful, and <span class="sub-highlight">always satisfying</span>. Dine in, take away, or get it delivered.</p>
+                <div class="btn-group">
+                    <a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20place%20an%20order." target="_blank" class="btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                        Order via WhatsApp
+                    </a>
+                    <a href="#menu" class="btn-secondary">View Menu</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="placeholder-img">
+                    <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="8"/>
+                        <path d="M4 4 L8 8 M20 4 L16 8 M4 20 L8 16 M20 20 L16 16"/>
+                        <path d="M9 9 L11 11 M13 13 L15 15"/>
+                    </svg>
+                    <div class="food-icon-text">JUMBO SHAWARMA</div>
+                    <p style="color:#F27A1A;">Our signature wrap</p>
+                    <p style="color:#6A5A4E; font-size:0.85rem;">Packed with flavour</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+        <div class="container about-grid reveal">
+            <div class="about-text">
+                <h2 class="section-title">About <span>Tasty Hub</span></h2>
+                <p>Welcome to Tasty Hub, the home of Kano's most irresistible shawarma. We take pride in crafting every wrap with the freshest ingredients, perfectly spiced meat, and our signature sauces that keep customers coming back for more.</p>
+                <p>Whether you are grabbing a quick bite, enjoying a meal with friends, or ordering delivery to your doorstep, we promise an experience that is always fresh, tasty, and satisfying.</p>
+                <div class="about-stats">
+                    <div><div class="stat-number">4.2</div><div class="stat-label">Google Rating</div></div>
+                    <div><div class="stat-number">31+</div><div class="stat-label">Happy Reviews</div></div>
+                    <div><div class="stat-number">2020</div><div class="stat-label">Year Established</div></div>
+                </div>
+            </div>
+            <div style="background:#1A1614; border-radius:24px; padding:30px; border:1px solid #2A2420; text-align:center; display:flex; flex-direction:column; align-items:center; gap:16px;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 21h8M12 21v-5M9 16h6M6 16h3M15 16h3M6 16a5 5 0 0 1-1-9.9A6 6 0 0 1 11 2c1.2 0 2.3.4 3.2 1A6 6 0 0 1 19 6.1 5 5 0 0 1 18 16h0z"/>
+                </svg>
+                <p style="color:#A89486;">The best shawarma in Kano.<br>One bite and you will know.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU / SERVICES (UPDATED WITH REAL MENU) -->
+    <section id="menu" style="background:#0E0C0A;">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">Our <span>Menu</span></h2>
+                <p class="section-sub">Explore our signature dishes — crafted with passion and the finest ingredients.</p>
+            </div>
+
+            <!-- SHAWARMA -->
+            <div class="menu-category reveal">
+                <h3>Shawarma</h3>
+                <div class="menu-grid">
+                    <div class="menu-item reveal"><span class="item-name">Beef Shawarma</span><span class="item-price">₦3,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Beef%20Shawarma." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Extreme Beef Shawarma</span><span class="item-price">₦3,500</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Extreme%20Beef%20Shawarma." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Beef no Hotdog</span><span class="item-price">₦2,800</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Beef%20no%20Hotdog." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Chicken Shawarma</span><span class="item-price">₦4,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Chicken%20Shawarma." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Extreme Chicken Shawarma</span><span class="item-price">₦4,500</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Extreme%20Chicken%20Shawarma." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Chicken no Hotdog</span><span class="item-price">₦3,800</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Chicken%20no%20Hotdog." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Special Shawarma</span><span class="item-price">₦4,500</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Special%20Shawarma." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Jumbo Shawarma</span><span class="item-price">₦5,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Jumbo%20Shawarma." target="_blank" class="whatsapp-order-small">Order</a></div>
+                </div>
+            </div>
+
+            <!-- PIZZA -->
+            <div class="menu-category reveal">
+                <h3>Pizza</h3>
+                <div class="menu-grid">
+                    <div class="menu-item reveal"><span class="item-name">Chicken Delight</span><span class="item-price">₦10,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Chicken%20Delight%20Pizza." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Chicken BBQ</span><span class="item-price">₦10,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Chicken%20BBQ%20Pizza." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Beef Pizza</span><span class="item-price">₦10,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Beef%20Pizza." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Special Pizza</span><span class="item-price">₦12,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Special%20Pizza." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Pizza with Extra Topping</span><span class="item-price">₦12,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Pizza%20with%20Extra%20Topping." target="_blank" class="whatsapp-order-small">Order</a></div>
+                </div>
+            </div>
+
+            <!-- ASUN -->
+            <div class="menu-category reveal">
+                <h3>Asun</h3>
+                <div class="menu-grid">
+                    <div class="menu-item reveal"><span class="item-name">Full Grill Chicken</span><span class="item-price">₦10,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Full%20Grill%20Chicken." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Full Grill Asun</span><span class="item-price">₦70,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Full%20Grill%20Asun." target="_blank" class="whatsapp-order-small">Order</a></div>
+                </div>
+            </div>
+
+            <!-- FOOD -->
+            <div class="menu-category reveal">
+                <h3>Food</h3>
+                <div class="menu-grid">
+                    <div class="menu-item reveal"><span class="item-name">Special Pasta</span><span class="item-price">₦2,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Special%20Pasta." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Chinese Fried Rice</span><span class="item-price">₦3,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Chinese%20Fried%20Rice." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Coconut Fried Rice</span><span class="item-price">₦3,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Coconut%20Fried%20Rice." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Nigeria Jollof Rice</span><span class="item-price">₦2,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Nigeria%20Jollof%20Rice." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Pepper Chicken</span><span class="item-price">₦2,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Pepper%20Chicken." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Asun Fish</span><span class="item-price">₦1,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Asun%20Fish." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Plantain</span><span class="item-price">₦1,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Plantain." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Chicken and Chips</span><span class="item-price">₦6,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Chicken%20and%20Chips." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Gizadodo &amp; Special White Rice</span><span class="item-price">₦3,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Gizadodo%20and%20Special%20White%20Rice." target="_blank" class="whatsapp-order-small">Order</a></div>
+                </div>
+            </div>
+
+            <!-- PASTRIES & BURGERS -->
+            <div class="menu-category reveal">
+                <h3>Pastries &amp; Burgers</h3>
+                <div class="menu-grid">
+                    <div class="menu-item reveal"><span class="item-name">Meat Pie</span><span class="item-price">₦1,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Meat%20Pie." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Samosa</span><span class="item-price">₦250</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Samosa." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Spring Roll</span><span class="item-price">₦250</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Spring%20Roll." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Chicken Pie</span><span class="item-price">₦1,500</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Chicken%20Pie." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Beef Burger</span><span class="item-price">₦3,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Beef%20Burger." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Special Burger</span><span class="item-price">₦4,500</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Special%20Burger." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Double Decker Burger</span><span class="item-price">₦4,500</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Double%20Decker%20Burger." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Burger with Chips</span><span class="item-price">₦6,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Burger%20with%20Chips." target="_blank" class="whatsapp-order-small">Order</a></div>
+                    <div class="menu-item reveal"><span class="item-name">Double Decker Burger with Chips</span><span class="item-price">₦7,000</span><a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20order%20Double%20Decker%20Burger%20with%20Chips." target="_blank" class="whatsapp-order-small">Order</a></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- WHY CHOOSE US -->
+    <section id="why">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">Why <span>Choose Us</span></h2>
+                <p class="section-sub">We don't just make shawarma — we create an experience worth coming back for.</p>
+            </div>
+            <div class="why-grid">
+                <div class="why-item reveal">
+                    <span class="icon-wrap">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3AA34B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2v7M12 9a5 5 0 0 1-5-5v2a5 5 0 0 0 5 5zM12 9a5 5 0 0 0 5-5v2a5 5 0 0 1-5 5z"/>
+                        </svg>
+                    </span>
+                    <h4>Fresh Ingredients</h4>
+                    <p>We use only the freshest vegetables, quality meats, and our signature sauces.</p>
+                </div>
+                <div class="why-item reveal">
+                    <span class="icon-wrap">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M8 21h8M12 21v-5M9 16h6M6 16h3M15 16h3M6 16a5 5 0 0 1-1-9.9A6 6 0 0 1 11 2c1.2 0 2.3.4 3.2 1A6 6 0 0 1 19 6.1 5 5 0 0 1 18 16h0z"/>
+                        </svg>
+                    </span>
+                    <h4>Expertly Spiced</h4>
+                    <p>Our secret spice blends make every bite unforgettable. Taste the difference.</p>
+                </div>
+                <div class="why-item reveal">
+                    <span class="icon-wrap">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L4 5v7a8 8 0 0 0 8 8 8 8 0 0 0 8-8V5l-8-3z"/>
+                            <path d="M9 12l2 2 4-4"/>
+                        </svg>
+                    </span>
+                    <h4>4.2 Rated</h4>
+                    <p>Our customers consistently rate us among the best in Kano. We take pride in that.</p>
+                </div>
+                <div class="why-item reveal">
+                    <span class="icon-wrap">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#3AA34B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12l9-9 9 9"/>
+                            <path d="M5 10v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10"/>
+                            <path d="M9 21V13h6v8"/>
+                        </svg>
+                    </span>
+                    <h4>No-Contact Delivery</h4>
+                    <p>Enjoy your shawarma at home with our safe, reliable, and fast delivery service.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section id="testimonials" style="background:#0E0C0A;">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">What Our <span>Customers</span> Say</h2>
+                <p class="section-sub">Real feedback from the people who know us best.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card reveal">
+                    <div class="stars">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                    </div>
+                    <blockquote>"One very great place with the best shawarma in Kano! I'm not exaggerating. That literally give you value for money and you'd surely want to return."</blockquote>
+                    <cite>— Kay Redd (Google Review)</cite>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="stars">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                    </div>
+                    <blockquote>"Have you tried their shawarma? The very best I had in Kano. Always fresh and delicious."</blockquote>
+                    <cite>— Ter Aii (Google Review)</cite>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="stars">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="#F27A1A"><polygon points="12,2 15.09,8.5 22,9.5 17,14.5 18.18,21 12,17.5 5.82,21 7,14.5 2,9.5 8.91,8.5"/></svg>
+                    </div>
+                    <blockquote>"I go choose Tasty Hub shawarma — the only 'nze' of shawarma. Always amazing!"</blockquote>
+                    <cite>— Anthony Y. (Google Review)</cite>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section id="process">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">How to <span>Order</span></h2>
+                <p class="section-sub">Three simple steps to enjoy the best shawarma in Kano from the comfort of your home.</p>
+            </div>
+            <div class="process-steps">
+                <div class="step reveal"><div class="num">1</div><h4>Choose</h4><p>Browse our menu and pick your favourite shawarma.</p></div>
+                <div class="step reveal"><div class="num">2</div><h4>Order via WhatsApp</h4><p>Click the WhatsApp button and tell us your order.</p></div>
+                <div class="step reveal"><div class="num">3</div><h4>Enjoy</h4><p>We prepare fresh and deliver to your doorstep or you pick up.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTAGRAM FEED -->
+    <section id="instagram" style="background:#0E0C0A;">
+        <div class="container">
+            <div class="center-text reveal">
+                <h2 class="section-title">Follow Us on <span>Instagram</span></h2>
+                <p class="section-sub">See what's fresh at Tasty Hub. Follow <a href="https://instagram.com" target="_blank" style="color:#F27A1A; text-decoration:none;">@tastyhub</a> for daily updates.</p>
+            </div>
+            <div class="instagram-grid">
+                <!-- Replace the placeholder images with actual Instagram posts or food photos -->
+                <div class="instagram-item reveal">
+                    <img src="images/testy1.jpg" alt="Fresh shawarma wrap">
+                </div>
+                <div class="instagram-item reveal">
+                    <img src="images/Beef-shawarma.jpg" alt="Jumbo shawarma">
+                </div>
+                <div class="instagram-item reveal">
+                    <img src="images/images1.jpg" alt="Fresh vegetables">
+                </div>
+                <div class="instagram-item reveal">
+                    <img src="images/jumbo.jpg" alt="Spicy beef shawarma">
+                </div>
+                <div class="instagram-item reveal">
+                    <img src="images/images.jpg" alt="Shawarma combo platter">
+                </div>
+                <div class="instagram-item reveal">
+                    <img src="images/testy1.jpg" alt="Tasty Hub branding">
+                </div>
+            </div>
+            <p style="text-align:center; color:#6A5A4E; font-size:0.85rem; margin-top:16px;">
+            </p>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+        <div class="container reveal">
+            <div class="center-text">
+                <h2 class="section-title">Frequently Asked <span>Questions</span></h2>
+            </div>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">Do you offer delivery? <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+                    <div class="faq-answer">Yes, we offer no-contact delivery within Kano. Simply place your order via WhatsApp and we'll arrange delivery to your location.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What are your opening hours? <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+                    <div class="faq-answer">We are open daily from 12:30 PM to late night. Check our Google Maps for exact closing times.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Do you cater for events? <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+                    <div class="faq-answer">Absolutely! We offer catering for parties, meetings, and private events. Contact us for a custom quote.</div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What makes your shawarma different? <span class="arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span></button>
+                    <div class="faq-answer">Our secret spice blend, fresh ingredients, and generous portions make us the favorite shawarma spot in Kano. Come taste the difference!</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" style="background:#0E0C0A;">
+        <div class="container reveal">
+            <div class="center-text">
+                <h2 class="section-title">Get in <span>Touch</span></h2>
+                <p class="section-sub">We'd love to hear from you. Reach out for orders, reservations, or inquiries.</p>
+            </div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <p>
+                        <span class="icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="1.8"><circle cx="12" cy="10" r="3"/><path d="M12 22c4-4 8-7.5 8-12a8 8 0 0 0-16 0c0 4.5 4 8 8 12z"/></svg>
+                        </span>
+                        <span class="label">Address</span> 66, Ijebu Rd, Fagge, Kano 700211
+                    </p>
+                    <p>
+                        <span class="icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                        </span>
+                        <span class="label">Phone</span> <a href="tel:+2348139753621">0813 975 3621</a>
+                    </p>
+                    <p>
+                        <span class="icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                        </span>
+                        <span class="label">Hours</span> Mon–Sun: 12:30 PM – Late
+                    </p>
+                    <p>
+                        <span class="icon-wrap">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F27A1A" stroke-width="1.8"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 7l-10 7L2 7"/></svg>
+                        </span>
+                        <span class="label">Instagram</span> <a href="https://instagram.com" target="_blank">@tastyhub</a>
+                    </p>
+                    <div style="margin-top:20px;">
+                        <a href="https://wa.me/2348139753621" target="_blank" style="background:#25D366; padding:12px 28px; border-radius:40px; display:inline-flex; align-items:center; gap:10px; color:#fff; font-weight:600; text-decoration:none;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            Chat on WhatsApp
+                        </a>
+                    </div>
+                    <div class="map-placeholder">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3902.2780769423794!2d8.5395682!3d12.0243671!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x11ae81d232067d39%3A0x9580941a4544eb10!2sTasty%20Hub!5e0!3m2!1sen!2sng!4v1782894449861!5m2!1sen!2sng" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+                    </div>
+                </div>
+                <div>
+                    <form class="contact-form" id="contactForm" onsubmit="event.preventDefault(); alert('Thank you! We will get back to you shortly.');">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <input type="tel" placeholder="Your Phone" required>
+                        <textarea placeholder="Your Message (e.g., order, catering, inquiry)" required></textarea>
+                        <button type="submit">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>Tasty Hub</h4>
+                    <p>Your favourite spot for the best shawarma in Kano. Fresh, tasty, and always satisfying.</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <a href="#about">About</a>
+                    <a href="#menu">Menu</a>
+                    <a href="#instagram">Instagram</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <a href="tel:+2348139753621">0813 975 3621</a>
+                    <a href="https://wa.me/2348139753621" target="_blank">WhatsApp</a>
+                    <a href="https://instagram.com" target="_blank">Instagram</a>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Tasty Hub. All rights reserved. Built with care in Kano.
+            </div>
+        </div>
+    </footer>
+
+    <!-- FLOATING WHATSAPP -->
+    <a href="https://wa.me/2348139753621?text=Hello%20Tasty%20Hub!%20I%20want%20to%20place%20an%20order." target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="#ffffff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    </a>
+
+    <!-- BACK TO TOP -->
+    <a href="#" class="back-top" id="backTop" aria-label="Back to top">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+    </a>
+
+    <script>
+        // ----- LOADER -----
+        window.addEventListener('load', () => {
+            document.getElementById('loader').classList.add('hidden');
+        });
+
+        // ----- HAMBURGER -----
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ----- SCROLL REVEAL -----
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.15,
+            rootMargin: '0px 0px -30px 0px'
+        });
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ----- FAQ ACCORDION -----
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const btn = item.querySelector('.faq-question');
+            btn.addEventListener('click', () => {
+                faqItems.forEach(other => {
+                    if (other !== item) other.classList.remove('active');
+                });
+                item.classList.toggle('active');
+            });
+        });
+        if (faqItems.length) faqItems[0].classList.add('active');
+
+        // ----- BACK TO TOP -----
+        const backTop = document.getElementById('backTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backTop.classList.add('visible');
+            } else {
+                backTop.classList.remove('visible');
+            }
+        });
+        backTop.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ----- SCROLL SPY -----
+        const sections = document.querySelectorAll('section[id]');
+        const navLinkItems = document.querySelectorAll('.nav-links a:not(.nav-cta)');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 130;
+                if (window.scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinkItems.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // ----- SMOOTH SCROLL -----
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
